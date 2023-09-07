@@ -1,0 +1,13 @@
+Asynchronously writes data to a file, replacing the file if it already exists. data can be a string, a buffer, an <AsyncIterable>, or an <Iterable> object.
+
+The encoding option is ignored if data is a buffer.
+
+If options is a string, then it specifies the encoding.
+
+The mode option only affects the newly created file. See fs.open() for more details.
+
+Any specified <FileHandle> has to support writing.
+
+It is unsafe to use fsPromises.writeFile() multiple times on the same file without waiting for the promise to be settled.
+
+Similarly to fsPromises.readFile - fsPromises.writeFile is a convenience method that performs multiple write calls internally to write the buffer passed to it. For performance sensitive code consider using fs.createWriteStream() or filehandle.createWriteStream().
