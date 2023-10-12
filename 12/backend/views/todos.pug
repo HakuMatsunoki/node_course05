@@ -1,0 +1,15 @@
+extends layouts/main
+
+block content
+  h1 Todos List
+  .todos
+    each todo in todos
+      .todo
+        .owner
+          figure.owner__pic
+            img(src= todo.owner.avatar)
+          p.owner__name= todo.owner.name
+        .todo__content
+          h3.h3= todo.title
+          p.description= todo.description
+          p.duedate= todo.due.toLocaleString('uk-UA')

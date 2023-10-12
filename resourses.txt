@@ -1,0 +1,14 @@
+Node advanced concepts (event loop, thread pool, cron job, redis cache, testing, ci/cd, upload to the AWS S3 Bucket, etc..):
+https://www.youtube.com/watch?v=8aGhZQkoFbQ&ab_channel=JSConf
+https://www.udemy.com/course/advanced-node-for-developers/
+
+Algorithms and data structures:
+https://www.udemy.com/course/js-algorithms-and-data-structures-masterclass/
+https://www.eolymp.com/uk/
+
+Coding best practices, refactoring, software design patterns:
+https://refactoring.guru/uk
+
+Advanced Mongo (aggregations, etc..)
+SQL (sequelize, typeorm)
+TypeScript

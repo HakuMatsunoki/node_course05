@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS</title>
+    <style>
+      html {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: bisque;
+        margin: 0;
+        padding: 0;
+      }
+      h1,
+      p {
+        text-align: center;
+      }
+      .container {
+        width: 100rem;
+        margin: 0 auto;
+      }
+      ul {
+        border: 1px solid orangered;
+        border-radius: 0.5rem;
+        background-color: white;
+        height: 60vh;
+        list-style: none;
+        padding: 1rem;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column-reverse;
+      }
+      li {
+        font-size: 1.3rem;
+        color: lightslategray;
+      }
+      .input-group {
+        display: flex;
+        justify-content: space-between;
+        height: 3rem;
+      }
+      .input-group input {
+        border: 1px solid lightcyan;
+        outline: none;
+        width: 100%;
+        margin-right: 2rem;
+        padding: 0 1rem;
+        border-radius: 0.5rem;
+        display: block;
+      }
+      .input-group button {
+        border: none;
+        outline: none;
+        background-color: darkred;
+        padding: 0 3rem;
+        border-radius: 0.5rem;
+        color: white;
+        text-transform: uppercase;
+        font-size: 1rem;
+        line-height: 1rem;
+      }
+      .inactive {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Static page</h1>
+    <p>Socket io example</p>
+    <div class="container">
+      <ul id="messages"></ul>
+      <form id="msgForm" class="inactive">
+        <div class="input-group">
+          <input id="msg" type="text" autocomplete="false" placeholder="enter message" />
+          <button type="submit">send</button>
+        </div>
+      </form>
+      <form id="nickForm">
+        <div class="input-group">
+          <input id="nick" type="text" autocomplete="false" placeholder="enter your name" />
+          <button type="submit">join</button>
+        </div>
+      </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      let nick;
+      let socket;
+      const room = 'javascript';
+
+      const initSocket = (room, nick) => {
+        socket = io.connect('/nodeNameSpace');
+
+        socket.on('message', ({ nick, msg }) => {
+          const messages = document.getElementById('messages');
+
+          messages.insertAdjacentHTML(
+            'afterbegin',
+            `<li><span style="color: orangered; font-style: italic;">${nick}</span>&nbsp;${msg}</li>`
+          );
+        });
+
+        socket.on('connect', () => {
+          socket.emit('join', { room, nick });
+        });
+      };
+
+      const nickForm = document.getElementById('nickForm');
+      const msgForm = document.getElementById('msgForm');
+
+      nickForm &&
+        nickForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+
+          const nickField = document.getElementById('nick');
+
+          if (!nickField?.value) return;
+
+          nick = nickField.value;
+
+          initSocket(room, nick);
+
+          msgForm.classList.remove('inactive');
+          nickForm.classList.add('inactive');
+        });
+
+      msgForm &&
+        msgForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+
+          const msgField = document.getElementById('msg');
+
+          socket.emit('message', { msg: msgField.value, room, nick });
+
+          msgField.value = '';
+        });
+    </script>
+  </body>
+</html>
